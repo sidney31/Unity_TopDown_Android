@@ -33,20 +33,18 @@ public class Slime : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target.position, smoothing * Time.deltaTime);
         if (GetAbsDistanceBeetweenObjects(transform, target) < 15)
         {
-            if (Time.time >= nextJumpTime && GetAbsDistanceBeetweenObjects(transform, target) > 1)
+            if (Time.time >= nextJumpTime && GetAbsDistanceBeetweenObjects(transform, target) > 0.3)
             {
                 //Debug.Log(Mathf.Abs(transform.position.x - target.position.x));
                 nextJumpTime = Time.time + jumpRate;
                 anime.SetTrigger("Jump");
+                if (Time.time >= nextAttackTime)
+                {
+                    Attack();
+                    nextAttackTime = Time.time + attackRate;
+                }
             }
             smoothing = IsAnimationPlaying("SlimeJump") ? 2f : 0f;
-
-            if (Time.time >= nextAttackTime && GetAbsDistanceBeetweenObjects(transform, target) < 1)
-            {
-                anime.SetTrigger("Jump");
-                Attack();
-                nextAttackTime = Time.time + attackRate;
-            }
         }
         if (GetComponent<TakeDamage>().isDead)
         {

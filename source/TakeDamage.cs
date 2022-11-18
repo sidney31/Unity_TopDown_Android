@@ -19,7 +19,6 @@ public class TakeDamage : MonoBehaviour
         if(currentHP <= 0)
         {
             isDead = true;
-            DamageParticle();
             if(gameObject.name == "mushroom")
             {
                 player.GetComponent<Inventory>().MushroomCount++;
@@ -30,6 +29,7 @@ public class TakeDamage : MonoBehaviour
             }
         }
         currentHP -= 1;
+        DamageParticle();
 
     }
     private void DamageParticle()

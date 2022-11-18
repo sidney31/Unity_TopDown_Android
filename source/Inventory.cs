@@ -16,4 +16,9 @@ public class Inventory : MonoBehaviour
         MushroomCountText.text = MushroomCount.ToString();
         StoneÑountText.text = StoneÑount.ToString();
     }
+
+    private void trade()
+    {
+        // if (MushroomCount > 5 && StoneÑount > 5) { tradeaga }
+    }
 }
