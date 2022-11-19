@@ -11,10 +11,12 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Animator anime;
     [SerializeField] private Transform AttackPoint;
-    [SerializeField] private Transform NPC;
+    [SerializeField] private Transform tradeNPC;
+    [SerializeField] private Transform talkNPC;
     [SerializeField] private Joystick _joystick;
     [SerializeField] private GameObject TalkButton;
     [SerializeField] private LayerMask EnemyLayer;
+    [SerializeField] private LayerMask NPCLayer;
     [SerializeField] private ParticleSystem dust;
     [SerializeField] private bool FaceRight = true;
     [SerializeField] private float Speed = 5f;
@@ -22,14 +24,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float AttackRate = 0.5f;
     [SerializeField] private float AttackRange = 0.4f;
     [SerializeField] public int CurrentHP = 5;
-    [SerializeField] private GameObject trade;
+    [SerializeField] private bool canTrade;
+    [SerializeField] private bool canTalk;
 
     private void Start()
     {
-        Application.targetFrameRate = 300;
-        TalkButton.SetActive(false);
-        trade.SetActive(false);
-        NPC = GameObject.Find("NPC").transform;
+        Application.targetFrameRate = 60;
+        tradeNPC = GameObject.Find("tradeNPC").transform;
+        talkNPC = GameObject.Find("talkNPC").transform;
     }
     private void FixedUpdate()
     {
@@ -39,15 +41,7 @@ public class PlayerController : MonoBehaviour
         ReflectPlayer();
         anime.SetFloat("Speed", GetMaxOfVector(inputVector));
         transform.position += new Vector3(inputVector.x, inputVector.y, 0) * Speed * Time.deltaTime;
-        if (Mathf.Abs(transform.position.x - NPC.position.x) < 1 &&
-            Mathf.Abs(transform.position.y - NPC.position.y) < 1)
-        {
-            TalkButton.SetActive(true);
-        }
-        else
-        {
-            TalkButton.SetActive(false);
-        }
+        CheckNPC();
     }
 
     float GetMaxOfVector(Vector2 vector, float max = 0)
@@ -131,5 +125,39 @@ public class PlayerController : MonoBehaviour
         anime.SetBool("isDead", true);
         this.enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
+    }
+    private void CheckNPC()
+    {
+        Collider2D[] NPCInZone = Physics2D.OverlapCircleAll(AttackPoint.position, AttackRange, NPCLayer);
+        foreach (Collider2D NPC in NPCInZone)
+        {
+            TalkButton.SetActive(true);
+            if (NPC.name == "tradeNPC")
+            {
+                canTrade = true;
+                canTalk = false;
+            }else if(NPC.name == "talkNPC")
+            {
+                canTrade = false;
+                canTalk = true;
+            }
+        }
+        if (NPCInZone.Length < 1)
+        {
+            TalkButton.SetActive(false);
+            canTrade = false;
+            canTalk = false;
+        }
+    }
+    public void talkButtonPressed()
+    {
+        if (canTalk)
+        {
+            talkNPC.GetComponent<Dialogue>().StartDialog();
+        }
+        if (canTrade)
+        {
+            tradeNPC.GetComponent<TradeSystem>().StartTrade();
+        }
     }
 }

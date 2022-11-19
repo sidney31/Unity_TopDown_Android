@@ -6,17 +6,18 @@ using TMPro;
 public class Dialogue : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textComponent;
+    [SerializeField] private GameObject dialog;
     [TextArea(3, 10)]
     [SerializeField] private string[] lines;
     [SerializeField] private float textSpeed;
     [SerializeField] private int index;
     private void Start()
     {
-        gameObject.SetActive(false);
+        dialog.SetActive(false);
     }
     public void StartDialog()
     {
-        gameObject.SetActive(true);
+        dialog.SetActive(true);
         textComponent.text = string.Empty;
         index = 0;
         StartCoroutine(TypeLine());
@@ -39,7 +40,7 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
+            dialog.SetActive(false);
         }
     }
     public void ButtonNext()
