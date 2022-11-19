@@ -22,14 +22,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float AttackRate = 0.5f;
     [SerializeField] private float AttackRange = 0.4f;
     [SerializeField] public int CurrentHP = 5;
-
-    //inventory
-    [SerializeField] public int mushroom = 0;
+    [SerializeField] private GameObject trade;
 
     private void Start()
     {
         Application.targetFrameRate = 300;
         TalkButton.SetActive(false);
+        trade.SetActive(false);
         NPC = GameObject.Find("NPC").transform;
     }
     private void FixedUpdate()
