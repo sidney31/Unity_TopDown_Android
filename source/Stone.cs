@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Stone : MonoBehaviour
 {
-
     private void LateUpdate()
     {
         if (GetComponent<TakeDamage>().isDead)
@@ -15,6 +14,10 @@ public class Stone : MonoBehaviour
     private void Die()
     {
         this.enabled = false;
+        Invoke("_Destroy", 0.3f);
+    }
+    private void _Destroy()
+    {
         Destroy(gameObject);
     }
 }

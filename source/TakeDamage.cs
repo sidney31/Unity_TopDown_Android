@@ -19,7 +19,8 @@ public class TakeDamage : MonoBehaviour
         if(currentHP <= 0)
         {
             isDead = true;
-            if(gameObject.name == "mushroom")
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.0f);
+            if (gameObject.name == "mushroom")
             {
                 player.GetComponent<Inventory>().MushroomCount++;
             }
@@ -38,4 +39,5 @@ public class TakeDamage : MonoBehaviour
             particles.Play();
         }
     }
+
 }
