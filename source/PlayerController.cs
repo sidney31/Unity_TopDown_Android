@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,12 +27,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int CurrentHP = 5;
     [SerializeField] private bool canTrade;
     [SerializeField] private bool canTalk;
+    [SerializeField] private GameObject DieMenu;
 
     private void Start()
     {
         Application.targetFrameRate = 60;
         tradeNPC = GameObject.Find("tradeNPC").transform;
         talkNPC = GameObject.Find("talkNPC").transform;
+        DieMenu.SetActive(false); ;
     }
     private void FixedUpdate()
     {
@@ -125,6 +128,7 @@ public class PlayerController : MonoBehaviour
         anime.SetBool("isDead", true);
         this.enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
+        DieMenu.SetActive(true);
     }
     private void CheckNPC()
     {

@@ -10,15 +10,25 @@ public class Inventory : MonoBehaviour
     [SerializeField] public int MushroomCount;
     [SerializeField] private TMP_Text Stone—ountText;
     [SerializeField] public int Stone—ount;
+    [SerializeField] private GameObject[] buttons;
+    //[SerializeField] private TMP_Text[] textQueue;
+    [SerializeField] private TMP_Text textField;
 
-    private void Start()
-    {
-
-    }
     private void Update()
     {
         MushroomCountText.text = MushroomCount.ToString();
         Stone—ountText.text = Stone—ount.ToString();
+    }
+    public void PressButton(GameObject button)
+    {
+        Debug.Log(gameObject.name);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            if (button.name == buttons[i].name)
+            {
+                textField.text = buttons[i].name;
+            } 
+        }
     }
 
 }
