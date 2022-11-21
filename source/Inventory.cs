@@ -13,7 +13,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject[] buttons;
     [SerializeField] private GameObject[] desc;
     //[SerializeField] private TMP_Text[] textQueue;
-    [SerializeField] private TMP_Text textField;
 
     private void Start()
     {
@@ -29,12 +28,13 @@ public class Inventory : MonoBehaviour
     }
     public void PressButton(GameObject button)
     {
-        Debug.Log(gameObject.name);
         for (int i = 0; i < buttons.Length; i++)
         {
+            //Debug.Log(buttons[i] + " / " + button.name);
             desc[i].SetActive(false);
-            if (button.name == buttons[i].name)
+            if (buttons[i].name == button.name)
             {
+                //Debug.Log(buttons[i] + " / " + button.name);
                 desc[i].SetActive(true);
             }
         }
