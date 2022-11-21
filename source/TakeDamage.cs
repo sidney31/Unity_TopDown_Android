@@ -9,6 +9,7 @@ public class TakeDamage : MonoBehaviour
     [SerializeField] public bool isDead = false;
     [SerializeField] private ParticleSystem particles;
     [SerializeField] private Transform player;
+    [SerializeField] private bool transperent;
 
     private void Start()
     {
@@ -19,7 +20,11 @@ public class TakeDamage : MonoBehaviour
         if(currentHP <= 0)
         {
             isDead = true;
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.0f);
+
+            if (transperent)
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.0f);
+            }
             if (gameObject.name == "mushroom")
             {
                 player.GetComponent<Inventory>().MushroomCount++;
