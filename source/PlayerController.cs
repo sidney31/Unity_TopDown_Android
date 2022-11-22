@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject DieMenu;
     [SerializeField] private GameObject DamageSprite;
     [SerializeField] private float i = 0.9f;
+    [SerializeField] private float NextTakeDamageTime;
+    [SerializeField] private float TakeDamageRate = 1f;
+    [SerializeField] private float time;
 
     private void Start()
     {
@@ -38,6 +41,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        time = Time.time;
         Application.targetFrameRate = 60;
         Speed = anime.GetCurrentAnimatorStateInfo(0).IsName("Hit") ? 0f : 5f;
         inputVector.x = _joystick.Horizontal;
@@ -82,7 +86,10 @@ public class PlayerController : MonoBehaviour
             tempColor.a = 0.3f;
             other.GetComponent<SpriteRenderer>().color = tempColor;
         }
-        if (other && other.gameObject.name == "Fire")
+    }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.name == "Fire")
         {
             TakeDamage(1);
         }
@@ -178,7 +185,7 @@ public class PlayerController : MonoBehaviour
         {
             DamageSprite.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0, 0, i);
             Debug.Log(i);
-            yield return new WaitForSeconds(0.01f * Time.deltaTime);
+            yield return new WaitForSeconds(1 * Time.deltaTime);
             i -= 0.05f;
         }
     }
