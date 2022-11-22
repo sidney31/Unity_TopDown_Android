@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    private Vector2 inputVector;
-
-
+    [SerializeField] private Vector2 inputVector;
     [SerializeField] private Animator anime;
     [SerializeField] private Transform AttackPoint;
     [SerializeField] private Transform tradeNPC;
@@ -28,16 +26,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool canTrade;
     [SerializeField] private bool canTalk;
     [SerializeField] private GameObject DieMenu;
+    [SerializeField] private GameObject DamageSprite;
+    [SerializeField] private float i = 0.9f;
 
     private void Start()
     {
-        Application.targetFrameRate = 60;
         tradeNPC = GameObject.Find("tradeNPC").transform;
         talkNPC = GameObject.Find("talkNPC").transform;
-        DieMenu.SetActive(false); ;
+        DieMenu.SetActive(false);
+        DamageSprite.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
     }
     private void FixedUpdate()
     {
+        Application.targetFrameRate = 60;
         Speed = anime.GetCurrentAnimatorStateInfo(0).IsName("Hit") ? 0f : 5f;
         inputVector.x = _joystick.Horizontal;
         inputVector.y = _joystick.Vertical;
@@ -81,6 +82,10 @@ public class PlayerController : MonoBehaviour
             tempColor.a = 0.3f;
             other.GetComponent<SpriteRenderer>().color = tempColor;
         }
+        if (other && other.gameObject.name == "Fire")
+        {
+            TakeDamage(1);
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
@@ -115,7 +120,10 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
+        i = 0.9f;
         CurrentHP -= damage;
+        DamageSprite.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0, 0, 1f);
+        StartCoroutine(damageEffect());
         if (CurrentHP <= 0)
         {
             Die();
@@ -162,6 +170,16 @@ public class PlayerController : MonoBehaviour
         if (canTrade)
         {
             tradeNPC.GetComponent<TradeSystem>().StartTrade();
+        }
+    }
+    private IEnumerator damageEffect()
+    {
+        while (i > 0)
+        {
+            DamageSprite.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0, 0, i);
+            Debug.Log(i);
+            yield return new WaitForSeconds(0.01f * Time.deltaTime);
+            i -= 0.05f;
         }
     }
 }

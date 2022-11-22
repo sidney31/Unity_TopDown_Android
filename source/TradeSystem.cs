@@ -13,11 +13,14 @@ public class TradeSystem : MonoBehaviour
     }
     public void StartTrade()
     {
+        Time.timeScale = 0;
         tradeMenu.SetActive(true);
         MenuButton.SetActive(false);
     }
     public void CloseTradeMenu()
     {
+        Time.timeScale = 1.0f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
         tradeMenu.SetActive(false);
         MenuButton.SetActive(true);
     }
